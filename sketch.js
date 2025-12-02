@@ -3,6 +3,7 @@ let started = false;
 let fft;
 let amp;
 let colorTheme = "default";
+let playButton;
 
 function preload() {
   soundFormats("mp3");
@@ -14,6 +15,12 @@ function setup() {
   fft = new p5.FFT();
   amp = new p5.Amplitude();
   noStroke();
+  
+  // 재생, 일시정지 버튼 만들기
+  playButton = createButton("Play/Pause");
+  playButton.position(10, 10);
+  playButton.mousePressed(togglePlay);
+
 }
 
 function draw() {
@@ -100,4 +107,13 @@ function keyPressed() {
   if (key === "B" || key === "b") colorTheme = "blue";
   if (key === "G" || key === "g") colorTheme = "green";
   if (key === "Y" || key === "y") colorTheme = "yellow";
+}
+
+// 버튼 클릭 시 음악 재생/일시정지
+function togglePlay() {
+  if (mySound.isPlaying()) {
+    mySound.pause();
+  } else {
+    mySound.play();
+  }
 }
