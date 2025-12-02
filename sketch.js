@@ -1,6 +1,7 @@
 let mySound;      
 let started = false; 
 let fft;          
+let amp;
 
 function preload() {
   soundFormats("mp3");
@@ -10,6 +11,7 @@ function preload() {
 function setup() {
   createCanvas(600, 400);
   fft = new p5.FFT(); 
+  amp = new p5.Amplitude();
   noStroke();
 }
 
@@ -24,9 +26,22 @@ function draw() {
     return; 
   }
 
-  background(20); 
-let soundValues = fft.analyze(); 
+  let vol = amp.getLevel();
 
+  // 소리 크기에 따라 낮/밤 배경 색 바꾸기
+  if (vol > 0.05) { // 소리가 크면 낮
+    background(135, 206, 250); // 하늘색
+    fill(255, 255, 0); // 해 색
+    ellipse(width - 80, 80, 50, 50); // 해
+  } else { // 소리가 작으면 밤
+    background(20, 24, 82); // 어두운 색
+    fill(255, 255, 200); // 달 색
+    ellipse(width - 80, 80, 40, 40); // 달
+  }
+  
+  // background(20); 
+let soundValues = fft.analyze(); 
+//건
 let spaceBetween = 20;  // 건물 사이 간격
 let buildingWidth = 15; // 건물 폭
 
