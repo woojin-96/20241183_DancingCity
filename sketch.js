@@ -15,12 +15,12 @@ function setup() {
   fft = new p5.FFT();
   amp = new p5.Amplitude();
   noStroke();
-  
+
   // 재생, 일시정지 버튼 만들기
   playButton = createButton("Play/Pause");
   playButton.position(10, 10);
   playButton.mousePressed(togglePlay);
-
+  playButton.hide();
 }
 
 function draw() {
@@ -35,14 +35,14 @@ function draw() {
   }
 
   let vol = amp.getLevel();
-  // 소리 크기에 따라 낮/밤 배경 색 바꾸기
-  if (vol > 0.05) {
-    // 소리가 크면 낮
+  // 소리 크기에 따라 낮/밤 배경 색 바꾸기('달춤'이라는 곡의 컨셉에 맞게 달동네 느낌이 빈번하게 나도록 설정함)
+  if (vol < 0.05) {
+    // 소리가 작으면 낮
     background(135, 206, 250); // 하늘색
     fill(255, 255, 0); // 해 색
     ellipse(width - 80, 80, 50, 50); // 해
   } else {
-    // 소리가 작으면 밤
+    // 소리가 크면 밤
     background(20, 24, 82); // 어두운 색
     fill(255, 255, 200); // 달 색
     ellipse(width - 80, 80, 40, 40); // 달
@@ -52,7 +52,7 @@ function draw() {
   let spaceBetween = 20; // 건물 사이 간격
   let buildingWidth = 15; // 건물 폭
 
-  // 음악 따라 건물 높이 만들기
+  // 음악 따라 건물 높이 만들기(음역대에 따라 건물 높이가 달라짐)
   for (let i = 0; i < soundValues.length; i += 5) {
     let h = map(soundValues[i], 0, 255, 10, height / 2);
     // 건물 위치
@@ -61,7 +61,7 @@ function draw() {
 
     let r, g, b;
 
-    // 키 입력에 따른 건물 색상
+    // 키 입력에 따른 건물 색상(분위기에 맞게 원하는대로 변경 가능하도록 함)
     if (colorTheme === "red") {
       r = 200;
       g = map(soundValues[i], 0, 255, 0, 80);
@@ -79,7 +79,7 @@ function draw() {
       g = 255;
       b = map(soundValues[i], 0, 255, 0, 80);
     } else {
-      // 기본 모드
+      // 기본 색상
       r = map(soundValues[i], 0, 255, 50, 255);
       g = map(soundValues[i], 0, 255, 50, 200);
       b = map(soundValues[i], 0, 255, 100, 255);
@@ -99,6 +99,7 @@ function mousePressed() {
   if (!started) {
     started = true;
     mySound.play();
+    playButton.show();
   }
 }
 
